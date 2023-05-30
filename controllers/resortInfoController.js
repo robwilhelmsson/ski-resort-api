@@ -1,7 +1,7 @@
 
-const axios = require('axios');
-const cheerio = require('cheerio');
-const { countryContinentData } = require('../data/countryContinentData');
+const axios = require('axios')
+const cheerio = require('cheerio')
+const { countryContinentData } = require('../data/countryContinentData')
 
 const getResortInfo = (req, res) => {
   const resort = req.params.resort
@@ -50,9 +50,9 @@ const getResortInfo = (req, res) => {
         const nearestAirport = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(4).text().trim()
         const nearestTrainStation = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(5).text().trim()
         const restaurantsBarsValue = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(3).text().trim()
-        const [restaurantsValue, barsValue] = restaurantsBarsValue.split('|').map(value => value.trim());
-        const terrainParks = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(9).text().trim();
-        const crossCountry = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(10).text().trim();
+        const [restaurantsValue, barsValue] = restaurantsBarsValue.split('|').map(value => value.trim())
+        const terrainParks = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(9).text().trim()
+        const crossCountry = $(this).find('div.resort-guide-travel__list-block div.resort-guide-travel__value').eq(10).text().trim()
         const upperSnowDepthValue = $(this).find('div.resort-guide-report__information table.resort-snow-depths-snippet__table span.snow').eq(0).text().trim()
         const upperSnowDepth = upperSnowDepthValue ? upperSnowDepthValue + 'cm' : ''
         const lowerSnowDepthValue = $(this).find('div.resort-guide-report__information table.resort-snow-depths-snippet__table span.snow').eq(1).text().trim()
@@ -71,8 +71,8 @@ const getResortInfo = (req, res) => {
         const ratingOffPiste = $(this).find('div.resort-rating span.resort-rating__rating').eq(2).text().trim()
         const ratingScenery = $(this).find('div.resort-rating span.resort-rating__rating').eq(3).text().trim()
         const ratingApresSki = $(this).find('div.resort-rating span.resort-rating__rating').eq(4).text().trim()
-        const nearestResortName = $(this).find('section.resort-guide-nearby-resorts div.resort-guide-nearby-resorts__resort-name').map((index, element) => $(element).text().trim()).get();
-        const nearestResortDistance = $(this).find('section.resort-guide-nearby-resorts div.resort-guide-nearby-resorts__distance span.dist').map((index, element) => $(element).text().trim()).get();
+        const nearestResortName = $(this).find('section.resort-guide-nearby-resorts div.resort-guide-nearby-resorts__resort-name').map((index, element) => $(element).text().trim()).get()
+        const nearestResortDistance = $(this).find('section.resort-guide-nearby-resorts div.resort-guide-nearby-resorts__distance span.dist').map((index, element) => $(element).text().trim()).get()
         const nearestResorts = nearestResortName.map((name, index) => ({
           name: name,
           distance: nearestResortDistance[index] + 'km'
@@ -163,4 +163,4 @@ const getResortInfo = (req, res) => {
 
 module.exports = {
   getResortInfo,
-};
+}
