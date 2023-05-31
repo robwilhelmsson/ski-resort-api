@@ -3,14 +3,30 @@ const cheerio = require('cheerio')
 const { URL } = require('url')
 const { resortsData } = require('../data/resortsData')
 
-const excludeWords = ['']
+
 const resortList = []
 
 const getResortList = (req, res) => {
-  resortList.length = 0
 
-  const requests = resortsData.map((resort) => {
-    return axios.get(resort.address)
+  resortList.length = 0
+  const continentSearch = req.params.continent
+  const countrySearch = req.params.country
+
+  let filteredResorts = resortsData
+  if (continentSearch) {
+    filteredResorts = filteredResorts.filter(
+      (resort) => resort.continent.toLowerCase() === continentSearch.toLowerCase()
+    );
+  }
+  if (countrySearch) {
+    filteredResorts = filteredResorts.filter(
+      (resort) => resort.country.toLowerCase() === countrySearch.toLowerCase()
+    );
+  }
+
+  const requests = filteredResorts.map((resort) => {
+    return axios
+      .get(resort.address)
       .then((response) => {
         const html = response.data
         const $ = cheerio.load(html)
@@ -19,20 +35,11 @@ const getResortList = (req, res) => {
           const name = $(this).find('div.name a').text().trim()
           const minAlt = $(this).find('p.elevation span.height:eq(0)').text().trim()
           const maxAlt = $(this).find('p.elevation span.height:eq(1)').text().trim()
-          const url = new URL(resort.address)
-          let country = url.pathname.split('/')[2]
-            .replace('-', '')
-            .replace(/([A-Z])/g, ' $1')
-            .replace('Bosnia Herzegovina', 'Bosnia and Herzegovina')
-            .replace('U S A', 'United States of America (U.S.A.)')
-          excludeWords.forEach((word) => {
-            country = country.replace(word, '')
-          })
-          country = country.trim()
+
           resortList.push({
             name: name,
             location: {
-              country: country,
+              country: resort.country,
               continent: resort.continent,
             },
             altitude: {
@@ -58,6 +65,4 @@ const getResortList = (req, res) => {
     })
 }
 
-module.exports = {
-  getResortList,
-}
+module.exports = { getResortList }

@@ -161,6 +161,4 @@ const getResortInfo = (req, res) => {
     .catch((err) => console.log(err))
 }
 
-module.exports = {
-  getResortInfo,
-}
+module.exports = { getResortInfo }
